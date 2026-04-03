@@ -11,12 +11,37 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U api_user -d emergency_bed"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  
+  backend:
+    build:
+      context: ./emergency-bed-service
+      dockerfile: Dockerfile
+    container_name: emergency-bed-service
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://database:5432/emergency_bed
+      - SPRING_DATASOURCE_USERNAME=api_user
+      - SPRING_DATASOURCE_PASSWORD=admin
+    depends_on:
+      database:
+        condition: service_healthy
 
   frontend:
     build:
-      context: front-end
+      context: ./front-end
       dockerfile: docker/Dockerfile
+    container_name: vue-frontend
     ports:
       - "5173:8080"
+    depends_on:
+      - backend
+
 volumes:
   postgres_data:
