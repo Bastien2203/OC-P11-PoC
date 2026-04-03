@@ -98,7 +98,7 @@ jobs:
       - name: node.js config
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24'
           cache: 'npm'
           cache-dependency-path: ./front-end/package-lock.json
 
@@ -116,7 +116,7 @@ jobs:
 
       - name: install npm dependancies
         working-directory: ./front-end
-        run: npm ci
+        run: npm i
 
       - name: install playwright browsers
         working-directory: ./front-end
