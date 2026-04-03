@@ -26,9 +26,10 @@ ET un événement devrait être publié pour réserver un lit.
 
 
 
-## Tests unitaires
+## Tests unitaires et intégration
 
-Run spring boot tests
+- Unitaire: spring boot test avec MockMvc pour simuler services externes
+- Intégration : Spring boot test avec TestContainers pour utiliser de vrais services (base de données) 
 
 
 ## Tests de stress
@@ -36,7 +37,3 @@ Run spring boot tests
 ```shell
 jmeter -n -t stress-test-plan.jmx -l stress-results.jtl -e -o stress-report
 ```
-
-
-
-## Tests d'intégration
