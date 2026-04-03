@@ -17,7 +17,7 @@ services:
       timeout: 5s
       retries: 5
 
-  backend:
+  emergency-bed-service:
     build:
       context: ./emergency-bed-service
       dockerfile: docker/Dockerfile
@@ -36,7 +36,7 @@ services:
     build:
       context: ./front-end
       dockerfile: docker/Dockerfile
-    container_name: vue-frontend
+    container_name: frontend
     ports:
       - "5173:8080"
     depends_on:
