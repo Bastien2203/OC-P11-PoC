@@ -98,7 +98,7 @@ jobs:
           distribution: 'temurin'
 
       - name: run postgresql with docker
-        run: docker compose up -d postgres
+        run: docker compose up -d database
         
       - name: wait database readiness
         run: sleep 10 
