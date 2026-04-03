@@ -11,5 +11,12 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
+
+  frontend:
+    build:
+      context: front-end
+      dockerfile: docker/Dockerfile
+    ports:
+      - "5173:8080"
 volumes:
   postgres_data:
