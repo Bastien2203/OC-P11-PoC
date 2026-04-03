@@ -1,9 +1,14 @@
 # OC-P11-PoC
 
 
-## E2E tests
+## Start project
 
-Lancer tests e2e avec l'interface : 
-```sh
-npx playwright test --ui
-```
+
+
+## Back end
+
+- [README Backend](./emergency-bed-service/README.md)
+
+## Front end
+
+- [README Frontend](./front-end/README.md)

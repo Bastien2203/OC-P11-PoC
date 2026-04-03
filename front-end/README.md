@@ -7,6 +7,10 @@ Une simple page permettant de sélectionner une spécialité et de saisir la
 localisation est suffisante,
 
 
-## Tests unitaires
 
-....
+## E2E tests
+
+Lancer tests e2e avec l'interface : 
+```sh
+npx playwright test --ui
+```

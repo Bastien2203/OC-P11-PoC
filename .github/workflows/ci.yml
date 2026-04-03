@@ -1,6 +1,9 @@
 name: CI Pipeline - Medhead
 
-on: push
+on: 
+  push:
+    branches:
+      - '**'
 
 jobs:
   backend-tests:
@@ -33,11 +36,11 @@ jobs:
           path: emergency-bed-service/build/libs/*.jar
           retention-days: 1
 
-
   stress-tests:
     name: Backend - Stress Tests
     needs: backend-tests
     runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop'
 
     steps:
       - name: checkout
@@ -79,7 +82,6 @@ jobs:
           name: jmeter-report
           path: emergency-bed-service/stress-report-web/
 
-
   e2e-tests:
     name: Frontend - E2E Playwright
     needs: backend-tests
@@ -95,10 +97,16 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
 
+      - name: run postgresql with docker
+        run: docker compose up -d postgres
+        
+      - name: wait database readiness
+        run: sleep 10 
+
       - name: node.js config
         uses: actions/setup-node@v4
         with:
-          node-version: '24'
+          node-version: '22'
           cache: 'npm'
           cache-dependency-path: ./front-end/package-lock.json
 
