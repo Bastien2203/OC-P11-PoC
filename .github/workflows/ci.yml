@@ -50,10 +50,6 @@ jobs:
           name: jmeter-report
           path: emergency-bed-service/stress-report-web/
 
-      - if: failure()
-        run: docker compose logs
-
-
   e2e-tests:
     name: Frontend - E2E Playwright
     needs: backend-tests
@@ -87,6 +83,3 @@ jobs:
           name: playwright-report
           path: front-end/playwright-report/
           retention-days: 7
-
-      - if: failure()
-        run: docker compose logs

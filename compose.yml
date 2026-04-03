@@ -17,11 +17,10 @@ services:
       timeout: 5s
       retries: 5
 
-  
   backend:
     build:
       context: ./emergency-bed-service
-      dockerfile: Dockerfile
+      dockerfile: docker/Dockerfile
     container_name: emergency-bed-service
     ports:
       - "8080:8080"
