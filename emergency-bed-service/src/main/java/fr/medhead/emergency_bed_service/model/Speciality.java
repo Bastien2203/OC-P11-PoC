@@ -1,6 +1,7 @@
 package fr.medhead.emergency_bed_service.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -24,8 +25,10 @@ public class Speciality {
 
     @ManyToOne
     @JoinColumn(name = "group_id", nullable = false)
+    @JsonIgnore
     private SpecialityGroup group;
 
     @ManyToMany(mappedBy = "specialities")
+    @JsonIgnore
     private List<Hospital> hospitals = new ArrayList<>();
 }
