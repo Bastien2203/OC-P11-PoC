@@ -7,19 +7,15 @@ on:
 
 jobs:
   backend-tests:
-    name: Backend - build and tests
+    name: Backend - Unit Tests
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v4
-
-      - name: java config
-        uses: actions/setup-java@v4
+      - uses: actions/setup-java@v4
         with:
           java-version: '21'
           distribution: 'temurin'
           cache: gradle
-
       - name: run tests
         working-directory: ./emergency-bed-service
         run: chmod +x gradlew && ./gradlew test
@@ -30,12 +26,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       - name: build compose stack
         run: |
-          docker-compose -f docker-compose.ci.yml up -d --build
+          docker compose up -d --build
           sleep 15
 
       - name: install jmeter
@@ -55,8 +50,7 @@ jobs:
           name: jmeter-report
           path: emergency-bed-service/stress-report-web/
 
-      - name: Dump Docker logs on failure
-        if: failure()
+      - if: failure()
         run: docker-compose -f docker-compose.ci.yml logs
 
 
@@ -66,12 +60,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       - name: build compose stack
         run: |
-          docker-compose -f docker-compose.ci.yml up -d --build
+          docker compose up -d --build
           sleep 15
 
       - name: install npm dependancies
@@ -94,3 +87,6 @@ jobs:
           name: playwright-report
           path: front-end/playwright-report/
           retention-days: 7
+
+      - if: failure()
+        run: docker-compose -f docker-compose.ci.yml logs
