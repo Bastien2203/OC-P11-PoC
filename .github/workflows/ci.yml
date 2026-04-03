@@ -51,7 +51,7 @@ jobs:
           path: emergency-bed-service/stress-report-web/
 
       - if: failure()
-        run: docker-compose -f docker-compose.ci.yml logs
+        run: docker compose logs
 
 
   e2e-tests:
@@ -89,4 +89,4 @@ jobs:
           retention-days: 7
 
       - if: failure()
-        run: docker-compose -f docker-compose.ci.yml logs
+        run: docker compose logs
