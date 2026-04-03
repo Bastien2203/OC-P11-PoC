@@ -133,6 +133,8 @@ jobs:
 
       - name: run vite server
         working-directory: ./front-end
+        env:
+          VITE_API_BASE_URL: http://localhost:8080/api
         run: |
           nohup npm run dev > vite.log 2>&1 &
           sleep 5
