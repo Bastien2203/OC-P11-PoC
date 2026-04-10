@@ -1,6 +1,6 @@
 services:
   database:
-    image: postgres:17
+    image: postgis/postgis:17-3.5
     container_name: postgres
     environment:
       POSTGRES_USER: api_user
@@ -40,7 +40,7 @@ services:
     ports:
       - "5173:8080"
     depends_on:
-      - backend
+      - emergency-bed-service
 
 volumes:
   postgres_data:

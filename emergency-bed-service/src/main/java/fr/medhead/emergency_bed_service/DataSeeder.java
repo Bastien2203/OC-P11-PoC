@@ -5,6 +5,7 @@ import fr.medhead.emergency_bed_service.model.SpecialityGroup;
 import fr.medhead.emergency_bed_service.repository.HospitalRepository;
 import fr.medhead.emergency_bed_service.repository.SpecialityGroupRepository;
 import fr.medhead.emergency_bed_service.repository.SpecialityRepository;
+import fr.medhead.emergency_bed_service.service.HospitalService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
@@ -18,23 +19,60 @@ import java.util.Map;
 @Component
 @Profile("seed")
 public class DataSeeder implements CommandLineRunner {
-    private final HospitalRepository hospitalRepo;
+    private final HospitalService hospitalService;
+    private final HospitalRepository hospitalRepository;
     private final SpecialityRepository specialityRepo;
     private final SpecialityGroupRepository groupRepo;
 
 
-
-    public DataSeeder(HospitalRepository hospitalRepo, SpecialityRepository specialityRepo, SpecialityGroupRepository groupRepo) {
-        this.hospitalRepo = hospitalRepo;
+    public DataSeeder(
+            HospitalService hospitalService,
+            SpecialityRepository specialityRepo,
+            SpecialityGroupRepository groupRepo,
+            HospitalRepository hospitalRepository
+    ) {
+        this.hospitalService = hospitalService;
         this.specialityRepo = specialityRepo;
         this.groupRepo = groupRepo;
+        this.hospitalRepository = hospitalRepository;
     }
 
 
     @Override
     public void run(String... args) throws Exception {
+        clearData();
+        loadSpecialities();
+        loadHospitals();
+    }
+
+    private void loadHospitals() {
+        hospitalService.createHospital(
+                "Hôpital Fred Brooks",
+                2,
+                List.of("Cardiologie", "Immunologie"),
+                46.890542, 0.4611285
+        );
+
+        hospitalService.createHospital(
+                "Hôpital Julia Crusher",
+                0,
+                List.of("Cardiologie"),
+                47.2124144, 2.5320513
+        );
+
+        hospitalService.createHospital(
+                "Hôpital Beverly Bashir",
+                5,
+                List.of("Immunologie", "Neuropathologie"),
+                46.4677744, -1.1239787
+        );
+    }
+
+
+    private void loadSpecialities() throws Exception {
         ObjectMapper mapper = new ObjectMapper();
-        TypeReference<Map<String, List<String>>> typeReference = new TypeReference<>() {};
+        TypeReference<Map<String, List<String>>> typeReference = new TypeReference<>() {
+        };
         try (InputStream inputStream = getClass().getResourceAsStream("/specialities.json")) {
             if (inputStream == null) {
                 System.err.println("Failed to read specialities.json");
@@ -62,5 +100,12 @@ public class DataSeeder implements CommandLineRunner {
 
         System.out.println("Successfully loaded specialities.json");
 
+    }
+
+
+    private void clearData() {
+        hospitalRepository.deleteAll();
+        groupRepo.deleteAll();
+        specialityRepo.deleteAll();
     }
 }
