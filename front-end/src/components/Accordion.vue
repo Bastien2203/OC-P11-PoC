@@ -1,3 +1,34 @@
+<script setup lang="ts">
+import { ref } from 'vue';
+
+const props = defineProps({
+  items: {
+    type: Array<Record<string,any>>,
+    required: true,
+    default: () => []
+  },
+  modelValue: {
+    type: [String, Number, null],
+    default: null
+  },
+  idKey: { type: String, default: 'id' },
+  labelKey: { type: String, default: 'name' },
+  childrenKey: { type: String, default: 'items' } 
+});
+
+const emit = defineEmits(['update:modelValue']);
+
+const openCategoryId = ref<string|null>(null);
+
+const toggleCategory = (id: string) => {
+  openCategoryId.value = openCategoryId.value === id ? null : id;
+};
+
+const selectItem = (id: string) => {
+  emit('update:modelValue', id);
+};
+</script>
+
 <template>
   <div class="w-full max-w-md mx-auto bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden">
     
@@ -44,34 +75,3 @@
 
   </div>
 </template>
-
-<script setup>
-import { ref } from 'vue';
-
-const props = defineProps({
-  items: {
-    type: Array,
-    required: true,
-    default: () => []
-  },
-  modelValue: {
-    type: [String, Number, null],
-    default: null
-  },
-  idKey: { type: String, default: 'id' },
-  labelKey: { type: String, default: 'name' },
-  childrenKey: { type: String, default: 'items' } 
-});
-
-const emit = defineEmits(['update:modelValue']);
-
-const openCategoryId = ref(null);
-
-const toggleCategory = (id) => {
-  openCategoryId.value = openCategoryId.value === id ? null : id;
-};
-
-const selectItem = (id) => {
-  emit('update:modelValue', id);
-};
-</script>

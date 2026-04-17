@@ -42,5 +42,17 @@ services:
     depends_on:
       - emergency-bed-service
 
+
+  api-gateway:
+    image: nginx:alpine
+    container_name: api-gateway
+    ports:
+      - "8888:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - nginx-cache:/var/cache/nginx
+
 volumes:
   postgres_data:
+  nginx-cache:
+    name: nginx-geocode-cache

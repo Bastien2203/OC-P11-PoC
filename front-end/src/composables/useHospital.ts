@@ -12,7 +12,7 @@ export function useHospital() {
     error.value = null
     
     try {
-      const baseUrl = import.meta.env.VITE_API_BASE_URL
+      const baseUrl = (import.meta as any).env.VITE_API_BASE_URL
       const response = await fetch(`${baseUrl}/hospitals/findNearest?lat=${lat}&lon=${lon}&speciality_id=${specialityId}`)
       
       if (!response.ok) {
@@ -33,8 +33,8 @@ export function useHospital() {
 
   return {
     hospital,
-    isLoading,
-    error,
+    hospitalIsLoading: isLoading,
+    hospitalError: error,
     fetchHospital
   }
 }
