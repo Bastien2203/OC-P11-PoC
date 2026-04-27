@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface HospitalRepository extends JpaRepository<Hospital, Long> {
     @Query(value = """
@@ -14,12 +16,8 @@ public interface HospitalRepository extends JpaRepository<Hospital, Long> {
             WHERE hs.hospital_id = h.id
             AND hs.speciality_id = :speciality_id
             AND h.available_beds > 1
-            ORDER BY h.coordinate <-> ST_SetSRID(ST_MakePoint(:longitude, :latitude), 4326)
-            LIMIT 1
             """, nativeQuery = true)
-    Hospital findNearest(
-            @Param("latitude") double latitude,
-            @Param("longitude") double longitude,
+    List<Hospital> findAvailableHospitals(
             @Param("speciality_id") int specialityId
     );
 }

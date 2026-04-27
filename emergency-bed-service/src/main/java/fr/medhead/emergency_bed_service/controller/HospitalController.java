@@ -23,7 +23,7 @@ public class HospitalController {
     }
 
     @GetMapping("/findNearest")
-    public Hospital findNearest(
+    public ResponseEntity<Hospital> findNearest(
             @RequestParam(name = "lat") double latitude,
             @RequestParam(name = "lon") double longitude,
             @RequestParam(name = "speciality_id") int specialityId
@@ -31,10 +31,10 @@ public class HospitalController {
         Hospital hospital = hospitalService.findNearest(latitude, longitude, specialityId);
 
         if (hospital == null) {
-            ResponseEntity.notFound().build();
+            return ResponseEntity.notFound().build();
         }
 
-        return hospital;
+        return ResponseEntity.ok(hospital);
     }
 
 }

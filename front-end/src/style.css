@@ -35,4 +35,8 @@
         @apply border rounded
     }
 
+    button {
+        cursor: pointer;
+    }
+
 }

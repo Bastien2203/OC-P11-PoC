@@ -1,5 +1,6 @@
 package fr.medhead.emergency_bed_service.service;
 
+import fr.medhead.emergency_bed_service.dto.HospitalRoute;
 import fr.medhead.emergency_bed_service.model.Hospital;
 import fr.medhead.emergency_bed_service.model.Speciality;
 import fr.medhead.emergency_bed_service.repository.HospitalRepository;
@@ -10,6 +11,7 @@ import org.locationtech.jts.geom.Point;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -17,16 +19,20 @@ public class HospitalService {
 
     private final HospitalRepository hospitalRepository;
 
+    private final HospitalRoutingService hospitalRoutingService;
+
     private final SpecialityRepository specialityRepository;
 
     private final GeometryFactory geometryFactory = new GeometryFactory(new org.locationtech.jts.geom.PrecisionModel(), 4326);
 
     public HospitalService(
             HospitalRepository hospitalRepository,
+            HospitalRoutingService hospitalRoutingService,
             SpecialityRepository specialityRepository
     ) {
         this.hospitalRepository = hospitalRepository;
         this.specialityRepository = specialityRepository;
+        this.hospitalRoutingService = hospitalRoutingService;
     }
 
     public List<Hospital> getAllHospitals() {
@@ -58,7 +64,17 @@ public class HospitalService {
 
 
     public Hospital findNearest(double latitude, double longitude, int specialityId) {
-        return hospitalRepository.findNearest(latitude, longitude, specialityId);
-    }
+        List<Hospital> hospitals = hospitalRepository.findAvailableHospitals(specialityId);
 
+        if (hospitals.isEmpty()) {
+            return null;
+        }
+        List<HospitalRoute> routes = hospitalRoutingService.getHospitalRoutes(latitude, longitude, hospitals);
+
+        return routes.stream()
+                .filter(route -> route.distanceInKm() != null)
+                .min(Comparator.comparingDouble(HospitalRoute::distanceInKm))
+                .map(HospitalRoute::hospital)
+                .orElse(null);
+    }
 }
