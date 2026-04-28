@@ -1,8 +1,10 @@
 Bed Emergency Service Poc
 =========================
 
+## Documentation 
 
 
+- Spec openapi disponible ici en local : http://localhost:8080/swagger-ui.html
 
 
 
