@@ -1,11 +1,8 @@
 package fr.medhead.emergency_bed_service.model;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Data;
-import org.locationtech.jts.geom.Point;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,19 +23,11 @@ public class Hospital {
     @Column(nullable = false)
     private Integer availableBeds;
 
-    @JsonIgnore
-    @Column(columnDefinition = "geometry(Point,4326)")
-    private Point coordinate;
+    @Column(nullable = false)
+    private Double latitude;
 
-    @JsonProperty("latitude")
-    public Double getLatitude() {
-        return coordinate != null ? coordinate.getY() : null;
-    }
-
-    @JsonProperty("longitude")
-    public Double getLongitude() {
-        return coordinate != null ? coordinate.getX() : null;
-    }
+    @Column(nullable = false)
+    private Double longitude;
 
     @ManyToMany
     @JoinTable(

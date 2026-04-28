@@ -5,9 +5,6 @@ import fr.medhead.emergency_bed_service.model.Hospital;
 import fr.medhead.emergency_bed_service.model.Speciality;
 import fr.medhead.emergency_bed_service.repository.HospitalRepository;
 import fr.medhead.emergency_bed_service.repository.SpecialityRepository;
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.Point;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -23,7 +20,6 @@ public class HospitalService {
 
     private final SpecialityRepository specialityRepository;
 
-    private final GeometryFactory geometryFactory = new GeometryFactory(new org.locationtech.jts.geom.PrecisionModel(), 4326);
 
     public HospitalService(
             HospitalRepository hospitalRepository,
@@ -35,14 +31,11 @@ public class HospitalService {
         this.hospitalRoutingService = hospitalRoutingService;
     }
 
-    public List<Hospital> getAllHospitals() {
-        return hospitalRepository.findAll();
-    }
 
     public Hospital decrementHospitalBed(Long id) {
         int updatedRows = hospitalRepository.decrementAvailableBeds(id);
         if (updatedRows == 0) {
-            throw new RuntimeException("Unable to decrement bed availabilitu. Hospital not available or not found (ID: " + id + ")");
+            throw new RuntimeException("Unable to decrement bed availability. Hospital not available or not found (ID: " + id + ")");
         }
         return hospitalRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Error while retrieving modified hospital"));
@@ -66,8 +59,8 @@ public class HospitalService {
         hospital.setAvailableBeds(availableBed);
         hospital.setSpecialities(specialityEntities);
 
-        Point point = geometryFactory.createPoint(new Coordinate(longitude, latitude));
-        hospital.setCoordinate(point);
+        hospital.setLatitude(latitude);
+        hospital.setLongitude(longitude);
 
         return hospitalRepository.save(hospital);
     }

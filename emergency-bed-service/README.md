@@ -11,7 +11,12 @@ Bed Emergency Service Poc
 ## Tests unitaires et intégration
 
 - Unitaire: spring boot test avec MockMvc pour simuler services externes
-- Intégration : Spring boot test avec TestContainers pour utiliser de vrais services (base de données) 
+
+
+- Intégration : Spring boot `test` avec TestContainers pour utiliser de vrais services (base de données)
+    - Test récuperation des spécialités : [SpecialityGroupIntegrationTest.java](./src/test/java/fr/medhead/emergency_bed_service/controller/SpecialityGroupIntegrationTest.java)
+    - Test Hopital disponible le plus proche : [HospitalNearestIntegrationTest.java](./src/test/java/fr/medhead/emergency_bed_service/controller/HospitalNearestIntegrationTest.java)
+    - Test Réserver lit dans hopital : [HospitalDecrementIntegrationTest.java](./src/test/java/fr/medhead/emergency_bed_service/controller/HospitalDecrementIntegrationTest.java)
 
 
 ## Tests de stress

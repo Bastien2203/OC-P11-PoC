@@ -8,8 +8,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/api/hospitals")
 @Tag(name = "Hospitals")
@@ -18,12 +16,6 @@ public class HospitalController {
 
     public HospitalController(HospitalService hospitalService) {
         this.hospitalService = hospitalService;
-    }
-
-    @Operation(summary = "Get all existing hospitals")
-    @GetMapping
-    public List<Hospital> getAllHospitals() {
-        return hospitalService.getAllHospitals();
     }
 
     @Operation(
@@ -51,7 +43,13 @@ public class HospitalController {
     public ResponseEntity<Hospital> findNearest(
             @PathVariable(name = "id") Long id
     ) {
-        Hospital hospital = hospitalService.decrementHospitalBed(id);
+        Hospital hospital;
+
+        try {
+            hospital = hospitalService.decrementHospitalBed(id);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
 
         if (hospital == null) {
             return ResponseEntity.notFound().build();
