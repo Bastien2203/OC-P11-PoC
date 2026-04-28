@@ -39,6 +39,16 @@ public class HospitalService {
         return hospitalRepository.findAll();
     }
 
+    public Hospital decrementHospitalBed(Long id) {
+        int updatedRows = hospitalRepository.decrementAvailableBeds(id);
+        if (updatedRows == 0) {
+            throw new RuntimeException("Unable to decrement bed availabilitu. Hospital not available or not found (ID: " + id + ")");
+        }
+        return hospitalRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Error while retrieving modified hospital"));
+    }
+    
+    
     public Hospital createHospital(
             String name,
             Integer availableBed,

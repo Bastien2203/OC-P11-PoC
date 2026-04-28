@@ -1,12 +1,27 @@
 <script setup lang="ts">
+import { ref } from 'vue';
 import { Hospital } from '../../types/Hospital';
 
-defineProps<{
+const props = defineProps<{
     hospitalIsLoading: boolean;
     hospitalError: string | null;
     hospital: Hospital | null;
     resetSearch: () => void;
+    bookHospitalBed: (id: number) => Promise<void>;
 }>();
+
+const bedIsBooked = ref<boolean>(false);
+
+const bookBed = () => {
+    if (props.hospital == null) throw Error("Cannot book a bed, cause hospital is null ")
+    props.bookHospitalBed(props.hospital.id)
+        .catch(e => console.error(e))
+        .then(() => {
+            bedIsBooked.value = true
+            console.log("successfully reserved bed")
+        })
+}
+
 </script>
 
 <template>
@@ -42,10 +57,21 @@ defineProps<{
         <p class="text-gray-500">Nous n'avons pas trouvé d'hôpital correspondant à votre recherche.</p>
     </div>
 
-    <div class="mt-8 pt-4 border-t border-gray-100 w-full flex justify-center">
-        <button @click="resetSearch"
-            class="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 font-medium hover:bg-gray-50 transition-colors">
-            Nouvelle recherche
-        </button>
+
+    <div class="mt-8 pt-4 border-t border-gray-100 w-full">
+        <div v-if="bedIsBooked">
+            Lit réservé avec succès !
+        </div>
+        <div v-else-if="hospital != null" class="flex justify-center gap-4">
+            <button @click="resetSearch"
+                class="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 font-medium hover:bg-gray-50 transition-colors">
+                Nouvelle recherche
+            </button>
+            <button @click="bookBed"
+                class="px-6 py-2 border border-gray-300 rounded-lg bg-blue-600 font-medium hover:bg-blue-500 text-white transition-colors">
+                Réserver un lit
+            </button>
+        </div>
+
     </div>
 </template>

@@ -37,4 +37,17 @@ public class HospitalController {
         return ResponseEntity.ok(hospital);
     }
 
+
+    @PatchMapping("{id}/decrement")
+    public ResponseEntity<Hospital> findNearest(
+            @PathVariable(name = "id") Long id
+    ) {
+        Hospital hospital = hospitalService.decrementHospitalBed(id);
+
+        if (hospital == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(hospital);
+    }
 }

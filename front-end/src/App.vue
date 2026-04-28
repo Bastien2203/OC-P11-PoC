@@ -9,7 +9,7 @@ import HospitalResult from './components/steps/HospitalResult.vue';
 
 
 const { groups, isLoading, error, fetchGroups } = useSpecialityGroups()
-const { hospital, hospitalIsLoading, hospitalError, fetchHospital } = useHospital()
+const { hospital, hospitalIsLoading, hospitalError, fetchHospital, bookHospitalBed } = useHospital()
 const currentStep = ref<number>(1);
 const selectedSpecialityId = ref<number | null>(null);
 
@@ -61,8 +61,6 @@ onMounted(() => {
         <span :class="{ 'text-blue-600': currentStep === 2 }">2. Localisation</span>
         <span class="w-8 h-px bg-gray-300"></span>
         <span :class="{ 'text-blue-600': currentStep === 3 }">3. Résultats</span>
-        <span class="w-8 h-px bg-gray-300"></span>
-        <span :class="{ 'text-blue-600': currentStep === 4 }">4. Demande</span>
       </div>
 
       <div
@@ -95,6 +93,7 @@ onMounted(() => {
               :hospitalError="hospitalError"
               :hospital="hospital"
               :resetSearch="resetSearch"
+              :bookHospitalBed="bookHospitalBed"
             />
           </div>
 
