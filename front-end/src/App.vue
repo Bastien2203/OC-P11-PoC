@@ -1,11 +1,13 @@
 <script setup lang="ts">
-import {onMounted, ref} from 'vue';
-import {useSpecialityGroups} from './composables/useSpecialityGroups'
-import {useHospital} from './composables/useHospital';
-import {LocationState} from './types/Geocoding';
+import { onMounted, ref } from 'vue';
+import { useSpecialityGroups } from './composables/useSpecialityGroups'
+import { useHospital } from './composables/useHospital';
+import { LocationState } from './types/Geocoding';
 import SpecialitySelection from './components/steps/SpecialitySelection.vue';
 import AddressSelection from './components/steps/AddressSelection.vue';
 import HospitalResult from './components/steps/HospitalResult.vue';
+import Layout from './components/ui/Layout.vue';
+import ReservationSuccess from './components/steps/ReservationSuccess.vue';
 
 
 const { groups, isLoading, error, fetchGroups } = useSpecialityGroups()
@@ -40,82 +42,61 @@ const resetSearch = () => {
   locationState.value = { address: '', longitude: null, latitude: null };
 };
 
+const onBookingSuccess = () => {
+  currentStep.value = 4;
+};
+
 onMounted(() => {
   fetchGroups()
 })
 </script>
 
 <template>
-  <div>
-    <header class="flex h-16 border-b border-gray-300 w-full bg-gray-200">
-      <img src="./assets/medhead.png" alt="medhead" />
-      <h1 class="invisible">Medhead</h1>
-    </header>
+  <Layout>
+    <ul v-if="currentStep < 4" class="steps w-full md:w-1/2 mb-8">
+      <li class="step" :class="{ 'step-primary': currentStep >= 1 }">Spécialité</li>
+      <li class="step" :class="{ 'step-primary': currentStep >= 2 }">Localisation</li>
+      <li class="step" :class="{ 'step-primary': currentStep >= 3 }">Résultats</li>
+    </ul>
 
 
-    <main class="grow flex flex-col items-center p-4 sm:p-8">
+    <div class="w-full max-w-xl min-h-100 flex flex-col relative">
+      <Transition name="fade" mode="out-in">
+        <div v-if="currentStep === 1">
+          <SpecialitySelection :isLoading="isLoading" :error="error" :groups="groups"
+            v-model:selectedSpecialityId="selectedSpecialityId" :nextStep="nextStep" />
+        </div>
 
-      <div class="w-full max-w-xl mb-6 flex justify-between items-center px-4 text-sm font-medium text-gray-500">
-        <span :class="{ 'text-blue-600': currentStep === 1 }">1. Spécialité</span>
-        <span class="w-8 h-px bg-gray-300"></span>
-        <span :class="{ 'text-blue-600': currentStep === 2 }">2. Localisation</span>
-        <span class="w-8 h-px bg-gray-300"></span>
-        <span :class="{ 'text-blue-600': currentStep === 3 }">3. Résultats</span>
-      </div>
+        <div v-else-if="currentStep === 2">
+          <AddressSelection :prevStep="prevStep" :submitSearch="submitSearch" v-model:locationState="locationState" />
+        </div>
 
-      <div
-        class="w-full max-w-xl min-h-100 flex flex-col relative">
+        <div v-else-if="currentStep === 3" class="p-6 sm:p-8 flex flex-col grow items-center text-center">
+          <HospitalResult :hospitalIsLoading="hospitalIsLoading" :hospitalError="hospitalError" :hospital="hospital"
+            @success="onBookingSuccess"
+            :resetSearch="resetSearch" :bookHospitalBed="bookHospitalBed" />
+        </div>
 
-        <Transition name="fade" mode="out-in">
+        <div v-else-if="currentStep === 4" class="p-6 sm:p-8 flex flex-col grow items-center text-center">
+          <ReservationSuccess :resetSearch="resetSearch" :hospitalName="hospital?.name" />
+        </div>
 
-          <div v-if="currentStep === 1">
-            <SpecialitySelection
-              :isLoading="isLoading"
-              :error="error"
-              :groups="groups"
-              v-model:selectedSpecialityId="selectedSpecialityId"
-              :nextStep="nextStep"
-            />
-          </div>
-          
-
-          <div v-else-if="currentStep === 2">
-            <AddressSelection
-              :prevStep="prevStep"
-              :submitSearch="submitSearch"
-              v-model:locationState="locationState"
-            />
-          </div>
-
-          <div v-else-if="currentStep === 3" class="p-6 sm:p-8 flex flex-col grow items-center text-center">
-            <HospitalResult
-              :hospitalIsLoading="hospitalIsLoading"
-              :hospitalError="hospitalError"
-              :hospital="hospital"
-              :resetSearch="resetSearch"
-              :bookHospitalBed="bookHospitalBed"
-            />
-          </div>
-
-        </Transition>
-      </div>
-    </main>
-  </div>
+      </Transition>
+    </div>
+  </Layout>
 </template>
 
 <style scoped>
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  transition: opacity 0.2s ease, transform 0.2s ease;
 }
 
 .fade-enter-from {
   opacity: 0;
-  transform: translateY(10px);
 }
 
 .fade-leave-to {
   opacity: 0;
-  transform: translateY(-10px);
 }
 </style>

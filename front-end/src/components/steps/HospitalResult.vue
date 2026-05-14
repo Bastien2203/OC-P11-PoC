@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { Hospital } from '../../types/Hospital';
+import Button from '../ui/Button.vue';
 
 const props = defineProps<{
     hospitalIsLoading: boolean;
@@ -10,68 +11,69 @@ const props = defineProps<{
     bookHospitalBed: (id: number) => Promise<void>;
 }>();
 
-const bedIsBooked = ref<boolean>(false);
+const emit = defineEmits<{
+    (e: 'success'): void;
+}>();
+
 
 const bookBed = () => {
     if (props.hospital == null) throw Error("Cannot book a bed, cause hospital is null ")
     props.bookHospitalBed(props.hospital.id)
-        .catch(e => console.error(e))
         .then(() => {
-            bedIsBooked.value = true
-            console.log("successfully reserved bed")
+            emit('success');
         })
+        .catch(e => {
+            console.error(e);
+        });
 }
-
 </script>
 
 <template>
     <div v-if="hospitalIsLoading" class="flex flex-col items-center justify-center grow py-12">
-        <Spinner size="w-12 h-12" color="text-blue-600" />
+        <Spinner size="w-12 h-12" color="text-primary-600" />
         <p class="mt-4 text-gray-600 font-medium">Recherche de l'hôpital le plus proche...</p>
     </div>
 
-    <div v-else-if="hospitalError" class="text-red-500 p-4 bg-red-50 rounded-md w-full">
-        Erreur: {{ hospitalError }}
+    <div v-else-if="hospitalError" class="alert alert-error shadow-sm w-full">
+        <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <span>{{ hospitalError }}</span>
     </div>
 
     <div v-else-if="hospital != null" class="flex flex-col items-center grow w-full pt-4">
-        <div class="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mb-4">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24"
+        <h2 class="card-title text-2xl text-success">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mr-2" fill="none" viewBox="0 0 24 24"
                 stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
             </svg>
-        </div>
-        <h2 class="text-2xl font-bold text-gray-800 mb-2">Hôpital trouvé !</h2>
-
-        <div class="mt-6 p-6 border border-gray-200 rounded-xl bg-gray-50 w-full flex flex-col items-start text-left">
-            <span class="text-lg font-bold text-blue-900">{{ hospital.name }}</span>
-            <div class="mt-3 flex items-center gap-2 text-gray-700">
-                <span class="inline-block w-3 h-3 rounded-full bg-green-500"></span>
-                <span><strong>{{ hospital.availableBeds }}</strong> lits disponibles</span>
-            </div>
+            Hôpital trouvé !
+        </h2>
+        <div class="stat bg-base-100 mt-4 rounded-box">
+            <div class="stat-title whitespace-normal">{{ hospital.name }}</div>
+            <div class="stat-value text-primary">{{ hospital.availableBeds }}</div>
+            <div class="stat-desc">Lits disponibles</div>
         </div>
     </div>
 
     <div v-else class="flex flex-col items-center grow py-12">
         <h2 class="text-xl font-bold text-gray-800 mb-2">Aucun établissement</h2>
         <p class="text-gray-500">Nous n'avons pas trouvé d'hôpital correspondant à votre recherche.</p>
+        <Button @click="resetSearch" variant="primary" class="w-full sm:w-auto mt-5">
+            Nouvelle recherche
+        </Button>
     </div>
 
 
     <div class="mt-8 pt-4 border-t border-gray-100 w-full">
-        <div v-if="bedIsBooked">
-            Lit réservé avec succès !
-        </div>
-        <div v-else-if="hospital != null" class="flex justify-center gap-4">
-            <button @click="resetSearch"
-                class="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 font-medium hover:bg-gray-50 transition-colors">
+        <div v-if="hospital != null" class="flex justify-center gap-4">
+            <Button @click="resetSearch" variant="secondary" class="w-1/2 sm:w-auto">
                 Nouvelle recherche
-            </button>
-            <button @click="bookBed"
-                class="px-6 py-2 border border-gray-300 rounded-lg bg-blue-600 font-medium hover:bg-blue-500 text-white transition-colors">
+            </Button>
+            <Button @click="bookBed" class="w-1/2 sm:w-auto">
                 Réserver un lit
-            </button>
+            </Button>
         </div>
-
     </div>
 </template>

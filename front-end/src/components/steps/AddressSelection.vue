@@ -2,6 +2,7 @@
 import { computed } from 'vue';
 import { LocationState } from '../../types/Geocoding';
 import AddressInput from '../AddressInput.vue';
+import Button from '../ui/Button.vue';
 
     const props = defineProps<{
         locationState: LocationState;
@@ -33,15 +34,13 @@ import AddressInput from '../AddressInput.vue';
             <AddressInput v-model="localLocationState" />
         </div>
 
-        <div class="mt-6 pt-4 border-t border-gray-100 flex justify-between items-center">
-            <button @click="prevStep" class="text-gray-500 hover:text-gray-800 font-medium px-4 py-2">
+        <div class="mt-6 pt-4 border-t border-gray-100 flex justify-center gap-4">
+            <Button @click="prevStep" variant="secondary" class="w-1/2 sm:w-auto">
                 Retour
-            </button>
-            <button @click="submitSearch" :disabled="!localLocationState.latitude"
-                class="px-6 py-2.5 rounded-lg text-white font-medium transition-colors"
-                :class="localLocationState.latitude ? 'bg-green-600 hover:bg-green-700' : 'bg-gray-300 cursor-not-allowed'">
+            </Button>
+            <Button @click="submitSearch" :disabled="!localLocationState.latitude" class="w-1/2 sm:w-auto">
                 Rechercher
-            </button>
+            </Button>
         </div>
     </div>
 </template>

@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { SpecialityGroup } from '../../types/SpecialityGroup';
-import Accordion from '../Accordion.vue';
-import Spinner from '../Spinner.vue';
+import SpecialityListMenu from '../SpecialityListMenu.vue';
+import Spinner from '../ui/Spinner.vue';
+import Button from '../ui/Button.vue';
 
 const props = defineProps<{
     isLoading: boolean;
@@ -36,20 +37,18 @@ const localSpecialityId = computed({
             <Spinner size="w-6 h-6" /> Chargement des spécialités...
         </div>
 
-        <div v-else-if="error" class="text-red-500 p-4 bg-red-50 rounded-md">
+        <div v-else-if="error" class="text-danger-500 p-4 bg-red-50 rounded-md">
             Erreur: {{ error }}
         </div>
 
         <div v-else>
-            <Accordion :items="groups" v-model="localSpecialityId" childrenKey="specialities" />
+            <SpecialityListMenu :items="groups" v-model="localSpecialityId" childrenKey="specialities" />
         </div>
 
-        <div class="mt-6 pt-4 border-t border-gray-100 flex justify-end">
-            <button @click="nextStep" :disabled="!selectedSpecialityId"
-                class="px-6 py-2.5 rounded-lg text-white font-medium transition-colors fixed bottom-0 right-0 mr-15 mb-5"
-                :class="selectedSpecialityId ? 'bg-blue-600 hover:bg-blue-700' : 'bg-gray-300 cursor-not-allowed'">
+        <div class="fixed bottom-5 right-5">
+            <Button @click="nextStep" :disabled="!selectedSpecialityId">
                 Suivant
-            </button>
+            </Button>
         </div>
     </div>
 </template>
