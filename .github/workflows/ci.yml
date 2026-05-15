@@ -20,37 +20,6 @@ jobs:
         working-directory: ./emergency-bed-service
         run: chmod +x gradlew && ./gradlew test
 
-  stress-tests:
-    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop'
-    name: Backend - Stress Tests
-    needs: backend-tests
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: build compose stack
-        run: |
-          docker compose up -d --build
-          sleep 15
-
-      - name: install jmeter
-        run: |
-          wget https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-5.6.3.tgz
-          tar -xzf apache-jmeter-5.6.3.tgz
-
-      - name: run jmeter
-        working-directory: ./emergency-bed-service
-        run: |
-          ../apache-jmeter-5.6.3/bin/jmeter -n -t stress-test-plan.jmx -l stress-results.jtl -e -o stress-report-web
-
-      - name: upload jmeter report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: jmeter-report
-          path: emergency-bed-service/stress-report-web/
-
   e2e-tests:
     if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop'
     name: Frontend - E2E Playwright
@@ -85,3 +54,35 @@ jobs:
           name: playwright-report
           path: front-end/playwright-report/
           retention-days: 7
+
+
+  stress-tests:
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop'
+    name: Backend - Stress Tests
+    needs: backend-tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: build compose stack
+        run: |
+          docker compose up -d --build
+          sleep 15
+
+      - name: install jmeter
+        run: |
+          wget https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-5.6.3.tgz
+          tar -xzf apache-jmeter-5.6.3.tgz
+
+      - name: run jmeter
+        working-directory: ./emergency-bed-service
+        run: |
+          ../apache-jmeter-5.6.3/bin/jmeter -n -t stress-test-plan.jmx -l stress-results.jtl -e -o stress-report-web
+
+      - name: upload jmeter report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: jmeter-report
+          path: emergency-bed-service/stress-report-web/

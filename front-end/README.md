@@ -14,3 +14,7 @@ Lancer tests e2e avec l'interface :
 ```sh
 npx playwright test --ui
 ```
+
+```sh
+npx playwright codegen http://localhost:5173
+```
