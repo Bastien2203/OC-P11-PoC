@@ -31,6 +31,11 @@ SPRING_DATASOURCE_PASSWORD=postgres
 ```bash
 ./gradlew bootRun
 ```
+ou si on veux lancer en peuplant la base de données avec des données factices :
+```sh
+./gradlew seedDatabase
+```
+
 
 > Sinon avec intellij : Gradle -> Tasks -> application -> bootRun
 
