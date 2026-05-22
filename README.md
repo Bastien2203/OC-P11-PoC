@@ -1,20 +1,34 @@
-# OC-P11-PoC
+PoC Medhead - Service de gestion des lits d'urgence
+==========
+
+Ce PoC a pour objectif de démontrer la faisabilité d'un service de gestion des lits d'urgence pour les hôpitaux.
+Il doit permettre à l'utilisateur de choisir une spécialité médicale, et de trouver l'hopital le plus proche qui a un lit disponible pour cette spécialité.
 
 
-## Start project
+## Lancer le projet
 
-Run database with docker
+### Avec docker compose (pour les tests)
+
+Lancer tout le projet avec docker compose (base de données, api gateway, backend et frontend)
 ```bash
-docker compose up -d database
+docker compose up -d
 ```
 
-Run backend with java 21 and gradle
+### Pour le développement
+
+1. Lancer la base de données et l'api gateway avec docker compose
+```bash
+docker compose up -d database
+docker compose up -d api-gateway
+```
+
+2. Lancer le backend
 ```bash
 cd emergency-bed-service
 ./gradlew bootRun
 ```
 
-Run frontend with node 22 
+3. Lancer le frontend
 ```bash
 cd front-end
 npm install
@@ -22,12 +36,9 @@ npm start # or `npm run dev`
 ```
 
 
-
-## Back end
+## Documentation détaillée de chaque partie du projet
 
 - [README Backend](./emergency-bed-service/README.md)
-
-## Front end
 
 - [README Frontend](./front-end/README.md)
 
@@ -35,53 +46,47 @@ npm start # or `npm run dev`
 
 
 
+## Versionning
 
 
-## Tests
+- Nommage des commits : [Conventional Commits](https://www.conventionalcommits.org/fr/v1.0.0-beta.3/)
+
+```
+<type>[optional scope]: <description>
+
+[optional body]
+
+[optional footer]
+```
+
+- Gestion des branches inspirée de [Gitflow](https://www.atlassian.com/fr/git/tutorials/comparing-workflows/gitflow-workflow)
+
+```mermaid
+gitGraph
+    commit id: "Init"
+    branch develop
+    checkout develop
+    commit id: "Début dev"
+    
+    %% Création d'une feature
+    branch feat/feature-name
+    checkout feat/feature-name
+    commit id: "Code feature"
+    checkout develop
+    merge feat/feature-name
+    
+    %% Mise en production
+    checkout main
+    merge develop
+      
+```
 
 
-### Tests E2E
+## CI/CD
 
-**Scénario**
-Le système d'intervention d'urgence en temps réel est destiné à suggérer l'hôpital le
-plus proche offrant un lit disponible et possédant la spécialisation attendue (voir les
-Données de référence sur les spécialités) sur la base d’une banque de données
-d'informations récentes sur les hôpitaux.
-Par exemple, SUPPOSONS trois hôpitaux, comme suit :
+Pour la CI/CD on utilise Github Actions avec un workflow défini dans [.github/workflows/ci.yml](.github/workflows/ci.yml).
 
-| Hopital                | Lits disponibles | Spécialités                  |
-|------------------------|------------------|------------------------------|
-| Hôpital Fred Brooks    | 2                | Cardiologie, immunologie     |
-| Hôpital Julia Crusher  | 0                | Cardiologie                  |
-| Hôpital Beverly Bashir | 5                | Immunologie, neuropathologie |
-
-
-ET un patient nécessitant des soins en cardiologie,
-QUAND un patient demande des soins en cardiologie ET que l'urgence est localisée
-près de l'hôpital Fred Brooks,
-ALORS l'hôpital Fred Brooks devrait être proposé,
-ET un événement devrait être publié pour réserver un lit.
-
-
-
-
----------
-
-## Checklist
-
-- [ ] Spécification OpenAPI des contrats de service
-- [ ] Conteneurisation des services
-- [ ] Conception pilotée par le domaine
-
-- [ ] Tests E2E
-- [ ] Tests de charge
-- [ ] Tests d'intégration
-- [ ] Tests unitaires
-- [ ] Tests de sécurités
-
-- [ ] CI/CD automatisé
-
-- [ ] Documentation de la PoC
-- [ ] Une présentation de la PoC, détaillant le comportement pris en charge, les connaissances acquises et les recommandations futures.
-
-
+Il comporte 3 jobs principaux :
+- **backend tests** (a chaque push) : lance les tests unitaires et d'intégration du backend
+- **e2e tests** (sur main/develop) : lance les tests e2e avec Playwright en lançant tout le projet avec docker compose
+- **stress tests** (sur main/develop) : lance les tests de stress avec JMeter en lançant tout le projet avec docker compose
