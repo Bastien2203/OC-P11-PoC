@@ -23,6 +23,7 @@ const localSpecialityId = computed({
     },
     set(v: number | null) {
         emit('update:selectedSpecialityId', v);
+        props.nextStep()
     }
 });
 </script>
@@ -43,12 +44,6 @@ const localSpecialityId = computed({
 
         <div v-else>
             <SpecialityListMenu :items="groups" v-model="localSpecialityId" childrenKey="specialities" />
-        </div>
-
-        <div class="fixed bottom-5 right-5">
-            <Button @click="nextStep" :disabled="!selectedSpecialityId">
-                Suivant
-            </Button>
         </div>
     </div>
 </template>

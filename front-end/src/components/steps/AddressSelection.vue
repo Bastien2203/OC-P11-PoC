@@ -31,7 +31,10 @@ import Button from '../ui/Button.vue';
 
         <div class="grow">
             <label class="block text-sm font-medium text-gray-700 mb-2">Saisissez votre adresse</label>
-            <AddressInput v-model="localLocationState" />
+            <AddressInput v-model="localLocationState" />  
+            <div class="mt-2 py-2 px-3 bg-primary-50 border-l-primary border-l-2 rounded-l-none text-sm italic text-gray-500">
+                Cette adresse n'est pas conservée. Elle sert exclusivement à cette recherche.
+            </div>
         </div>
 
         <div class="mt-6 pt-4 border-t border-gray-100 flex justify-center gap-4">
