@@ -38,3 +38,4 @@ out/
 stress-report/
 stress-results.jtl
 jmeter.log
+.DS_Store
