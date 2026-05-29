@@ -124,6 +124,7 @@ Spring boot
 
 ## Tests de stress
 
+Run tests :
 ```shell
 jmeter -n -t stress-test-plan.jmx -l stress-results.jtl -e -o stress-report
 ```
