@@ -33,7 +33,18 @@ public class Hospital {
     @JoinTable(
             name = "hospital_speciality",
             joinColumns = @JoinColumn(name = "hospital_id"),
-            inverseJoinColumns = @JoinColumn(name = "speciality_id")
+            inverseJoinColumns = @JoinColumn(name = "speciality_id"),
+            indexes = {
+                @Index(name = "idx_speciality_hospital", columnList = "speciality_id, hospital_id")
+            }
     )
     private List<Speciality> specialities = new ArrayList<>();
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
 }

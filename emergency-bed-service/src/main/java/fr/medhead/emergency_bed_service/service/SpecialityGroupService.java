@@ -2,6 +2,7 @@ package fr.medhead.emergency_bed_service.service;
 
 import fr.medhead.emergency_bed_service.model.SpecialityGroup;
 import fr.medhead.emergency_bed_service.repository.SpecialityGroupRepository;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,7 +15,8 @@ public class SpecialityGroupService {
         this.repository = repository;
     }
 
+    @Cacheable("specialityGroups")
     public List<SpecialityGroup> getAllGroups() {
-        return repository.findAll();
+        return repository.findAllWithSpecialities();
     }
 }
