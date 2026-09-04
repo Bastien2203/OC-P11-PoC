@@ -14,7 +14,6 @@ test('User can choose a speciality, enter its address, and book a bed in an avai
   await page.goto('http://localhost:5173/');
   await page.locator('a').filter({ hasText: 'Groupe de médecine générale' }).click();
   await page.locator('a').filter({ hasText: 'Cardiologie' }).click();
-  await page.getByRole('button', { name: 'Suivant' }).click();
   await page.getByRole('textbox', { name: 'Commencez à taper une adresse' }).click();
   await page.getByRole('textbox', { name: 'Commencez à taper une adresse' }).fill('17 Rue paul émile victor la rochelle');
   await page.getByText('Rue Paul-Émile Victor 17000 La Rochelle17, Charente-Maritime, Nouvelle-Aquitaine').click();
@@ -32,7 +31,6 @@ test('User choose an anavailable speciality, so a message indicate that no hospi
   await page.goto('http://localhost:5173/');
   await page.locator('a').filter({ hasText: 'Oncologie clinique' }).click();
   await page.locator('a').click();
-  await page.getByRole('button', { name: 'Suivant' }).click();
   await page.getByRole('textbox', { name: 'Commencez à taper une adresse' }).click();
   await page.getByRole('textbox', { name: 'Commencez à taper une adresse' }).fill('17 Rue paul émile victor la rochelle');
   await page.getByText('Rue Paul-Émile Victor 17000 La Rochelle17, Charente-Maritime, Nouvelle-Aquitaine').click();
