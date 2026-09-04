@@ -15,7 +15,7 @@ public class SpecialityGroupService {
         this.repository = repository;
     }
 
-    @Cacheable("specialityGroups")
+    @Cacheable(value = "specialityGroups", unless = "#result == null || #result.isEmpty()")
     public List<SpecialityGroup> getAllGroups() {
         return repository.findAllWithSpecialities();
     }
