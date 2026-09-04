@@ -5,6 +5,16 @@ Ce PoC a pour objectif de démontrer la faisabilité d'un service de gestion des
 Il doit permettre à l'utilisateur de choisir une spécialité médicale, et de trouver l'hopital le plus proche qui a un lit disponible pour cette spécialité.
 
 
+## Table des matières
+
+- [CI](doc/CI.md)
+- [Versionning](doc/VERSIONNING.md)
+- [Documentation Backend](./emergency-bed-service/README.md)
+- [Documentation Frontend](./front-end/README.md)
+- [Lancer le projet](#lancer-le-projet)
+
+
+
 ## Lancer le projet
 
 ### Avec docker compose (pour les tests)
@@ -32,61 +42,5 @@ cd emergency-bed-service
 ```bash
 cd front-end
 npm install
-npm start # or `npm run dev`
+npm run dev
 ```
-
-
-## Documentation détaillée de chaque partie du projet
-
-- [README Backend](./emergency-bed-service/README.md)
-
-- [README Frontend](./front-end/README.md)
-
-
-
-
-
-## Versionning
-
-
-- Nommage des commits : [Conventional Commits](https://www.conventionalcommits.org/fr/v1.0.0-beta.3/)
-
-```
-<type>[optional scope]: <description>
-
-[optional body]
-
-[optional footer]
-```
-
-- Gestion des branches inspirée de [Gitflow](https://www.atlassian.com/fr/git/tutorials/comparing-workflows/gitflow-workflow)
-
-```mermaid
-gitGraph
-    commit id: "Init"
-    branch develop
-    checkout develop
-    commit id: "Début dev"
-    
-    %% Création d'une feature
-    branch feat/feature-name
-    checkout feat/feature-name
-    commit id: "Code feature"
-    checkout develop
-    merge feat/feature-name
-    
-    %% Mise en production
-    checkout main
-    merge develop
-      
-```
-
-
-## CI/CD
-
-Pour la CI/CD on utilise Github Actions avec un workflow défini dans [.github/workflows/ci.yml](.github/workflows/ci.yml).
-
-Il comporte 3 jobs principaux :
-- **backend tests** (a chaque push) : lance les tests unitaires et d'intégration du backend
-- **e2e tests** (sur main/develop) : lance les tests e2e avec Playwright en lançant tout le projet avec docker compose
-- **stress tests** (sur main/develop) : lance les tests de stress avec JMeter en lançant tout le projet avec docker compose

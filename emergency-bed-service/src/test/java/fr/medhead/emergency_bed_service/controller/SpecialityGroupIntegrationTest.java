@@ -52,7 +52,7 @@ public class SpecialityGroupIntegrationTest {
                         .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(2))
-                .andExpect(jsonPath("$[0].name").value("Cardiologie"))
-                .andExpect(jsonPath("$[1].name").value("Neurologie"));
+                .andExpect(jsonPath("$[0].name").value("Neurologie"))
+                .andExpect(jsonPath("$[1].name").value("Cardiologie"));
     }
 }

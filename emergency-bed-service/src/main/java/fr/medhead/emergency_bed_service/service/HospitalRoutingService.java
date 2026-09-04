@@ -29,7 +29,6 @@ public class HospitalRoutingService {
 
         try {
             OsrmTableResponse response = restTemplate.getForObject(url, OsrmTableResponse.class);
-
             if (response != null && "Ok".equals(response.code()) && response.distances() != null && !response.distances().isEmpty()) {
                 return buildRoutes(hospitals, response);
             } else {

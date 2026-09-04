@@ -1,11 +1,23 @@
 package fr.medhead.emergency_bed_service;
 
+import org.apache.hc.client5.http.config.ConnectionConfig;
+import org.apache.hc.client5.http.config.RequestConfig;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
+import org.apache.hc.client5.http.impl.classic.HttpClients;
+import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManager;
+import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManagerBuilder;
+import org.apache.hc.core5.util.Timeout;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.cache.concurrent.ConcurrentMapCacheManager;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
 @SpringBootApplication
+@EnableCaching
 public class EmergencyBedServiceApplication {
 
 
@@ -14,8 +26,35 @@ public class EmergencyBedServiceApplication {
     }
 
     @Bean
+    public CacheManager cacheManager() {
+        return new ConcurrentMapCacheManager("specialityGroups");
+    }
+
+    @Bean
     public RestTemplate restTemplate() {
-        return new RestTemplate();
+        PoolingHttpClientConnectionManager connectionManager = PoolingHttpClientConnectionManagerBuilder.create()
+                .setMaxConnTotal(1000)
+                .setMaxConnPerRoute(500)
+                .setDefaultConnectionConfig(ConnectionConfig.custom()
+                        .setConnectTimeout(Timeout.ofSeconds(3))
+                        .setSocketTimeout(Timeout.ofSeconds(5))
+                        .build())
+                .build();
+
+        RequestConfig requestConfig = RequestConfig.custom()
+                .setConnectionRequestTimeout(Timeout.ofSeconds(2))
+                .setResponseTimeout(Timeout.ofSeconds(5))
+                .build();
+
+        CloseableHttpClient httpClient = HttpClients.custom()
+                .setConnectionManager(connectionManager)
+                .setDefaultRequestConfig(requestConfig)
+                .build();
+
+        HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory(httpClient);
+        factory.setConnectionRequestTimeout(2000);
+
+        return new RestTemplate(factory);
     }
 }
 

@@ -1,25 +1,25 @@
-2026-04-28 13:44:31,462 INFO o.a.j.u.JMeterUtils: Setting Locale to en_EN
-2026-04-28 13:44:31,514 INFO o.a.j.JMeter: Loading user properties from: /Users/bastien.grisvard/Downloads/apache-jmeter-5.6.3/bin/user.properties
-2026-04-28 13:44:31,516 INFO o.a.j.JMeter: Loading system properties from: /Users/bastien.grisvard/Downloads/apache-jmeter-5.6.3/bin/system.properties
-2026-04-28 13:44:31,528 INFO o.a.j.JMeter: Copyright (c) 1998-2024 The Apache Software Foundation
-2026-04-28 13:44:31,528 INFO o.a.j.JMeter: Version 5.6.3
-2026-04-28 13:44:31,528 INFO o.a.j.JMeter: java.version=24.0.1
-2026-04-28 13:44:31,528 INFO o.a.j.JMeter: java.vm.name=OpenJDK 64-Bit Server VM
-2026-04-28 13:44:31,529 INFO o.a.j.JMeter: os.name=Mac OS X
-2026-04-28 13:44:31,529 INFO o.a.j.JMeter: os.arch=x86_64
-2026-04-28 13:44:31,529 INFO o.a.j.JMeter: os.version=26.2
-2026-04-28 13:44:31,529 INFO o.a.j.JMeter: file.encoding=UTF-8
-2026-04-28 13:44:31,529 INFO o.a.j.JMeter: java.awt.headless=true
-2026-04-28 13:44:31,529 INFO o.a.j.JMeter: Max memory     =1073741824
-2026-04-28 13:44:31,529 INFO o.a.j.JMeter: Available Processors =8
-2026-04-28 13:44:31,549 INFO o.a.j.JMeter: Default Locale=English (EN)
-2026-04-28 13:44:31,549 INFO o.a.j.JMeter: JMeter  Locale=English (EN)
-2026-04-28 13:44:31,549 INFO o.a.j.JMeter: JMeterHome=/Users/bastien.grisvard/Downloads/apache-jmeter-5.6.3
-2026-04-28 13:44:31,549 INFO o.a.j.JMeter: user.dir  =/Users/bastien.grisvard/Documents/OC/P11/OC-P11-PoC
-2026-04-28 13:44:31,550 INFO o.a.j.JMeter: PWD       =/Users/bastien.grisvard/Documents/OC/P11/OC-P11-PoC
-2026-04-28 13:44:31,583 INFO o.a.j.JMeter: IP: 192.168.1.55 Name: MacBookPro FullName: macbookpro
-2026-04-28 13:44:31,610 INFO o.a.j.JMeter: Setting property 'jmeter.reportgenerator.outputdir' to:'/Users/bastien.grisvard/Documents/OC/P11/OC-P11-PoC/stress-report'
-2026-04-28 13:44:31,611 ERROR o.a.j.JMeter: An error occurred: 
+2026-05-29 09:26:43,944 INFO o.a.j.u.JMeterUtils: Setting Locale to en_EN
+2026-05-29 09:26:43,982 INFO o.a.j.JMeter: Loading user properties from: /Users/bastien.grisvard/Downloads/apache-jmeter-5.6.3/bin/user.properties
+2026-05-29 09:26:43,983 INFO o.a.j.JMeter: Loading system properties from: /Users/bastien.grisvard/Downloads/apache-jmeter-5.6.3/bin/system.properties
+2026-05-29 09:26:43,995 INFO o.a.j.JMeter: Copyright (c) 1998-2024 The Apache Software Foundation
+2026-05-29 09:26:43,995 INFO o.a.j.JMeter: Version 5.6.3
+2026-05-29 09:26:43,996 INFO o.a.j.JMeter: java.version=24.0.1
+2026-05-29 09:26:43,996 INFO o.a.j.JMeter: java.vm.name=OpenJDK 64-Bit Server VM
+2026-05-29 09:26:43,996 INFO o.a.j.JMeter: os.name=Mac OS X
+2026-05-29 09:26:43,996 INFO o.a.j.JMeter: os.arch=x86_64
+2026-05-29 09:26:43,996 INFO o.a.j.JMeter: os.version=26.2
+2026-05-29 09:26:43,996 INFO o.a.j.JMeter: file.encoding=UTF-8
+2026-05-29 09:26:43,996 INFO o.a.j.JMeter: java.awt.headless=true
+2026-05-29 09:26:43,996 INFO o.a.j.JMeter: Max memory     =1073741824
+2026-05-29 09:26:43,997 INFO o.a.j.JMeter: Available Processors =8
+2026-05-29 09:26:44,018 INFO o.a.j.JMeter: Default Locale=English (EN)
+2026-05-29 09:26:44,018 INFO o.a.j.JMeter: JMeter  Locale=English (EN)
+2026-05-29 09:26:44,019 INFO o.a.j.JMeter: JMeterHome=/Users/bastien.grisvard/Downloads/apache-jmeter-5.6.3
+2026-05-29 09:26:44,019 INFO o.a.j.JMeter: user.dir  =/Users/bastien.grisvard/Documents/OC/P11/OC-P11-PoC
+2026-05-29 09:26:44,019 INFO o.a.j.JMeter: PWD       =/Users/bastien.grisvard/Documents/OC/P11/OC-P11-PoC
+2026-05-29 09:26:44,027 INFO o.a.j.JMeter: IP: 192.168.1.54 Name: MacBookPro FullName: macbookpro
+2026-05-29 09:26:44,047 INFO o.a.j.JMeter: Setting property 'jmeter.reportgenerator.outputdir' to:'/Users/bastien.grisvard/Documents/OC/P11/OC-P11-PoC/stress-report'
+2026-05-29 09:26:44,048 ERROR o.a.j.JMeter: An error occurred: 
 org.apache.jmeter.report.config.ConfigurationException: The file /Users/bastien.grisvard/Documents/OC/P11/OC-P11-PoC/stress-test-plan.jmx doesn't exist or can't be opened
 	at org.apache.jmeter.JMeter.runNonGui(JMeter.java:950) ~[ApacheJMeter_core.jar:5.6.3]
 	at org.apache.jmeter.JMeter.startNonGui(JMeter.java:940) ~[ApacheJMeter_core.jar:5.6.3]

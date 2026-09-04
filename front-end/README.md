@@ -19,7 +19,7 @@ Prerequis :
 Par défaut les valeurs sont celles utilisées pour le développement local :
 ```sh
 VITE_API_BASE_URL=http://localhost:8080/api
-VITE_API_GEOCODE_URL=http://localhost:8888/api-geo
+VITE_API_GEOCODE_URL=http://localhost:8080/api-geo
 ```
 
 2. Lancer le frontend
