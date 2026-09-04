@@ -9,7 +9,9 @@ import java.util.List;
 
 @Data
 @Entity
-@Table(name = "hospital")
+@Table(name = "hospital", indexes = {
+        @Index(name = "idx_hospital_available_beds", columnList = "available_beds")
+})
 public class Hospital {
 
     @Id
@@ -20,7 +22,7 @@ public class Hospital {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
+    @Column(name = "available_beds", nullable = false)
     private Integer availableBeds;
 
     @Column(nullable = false)
